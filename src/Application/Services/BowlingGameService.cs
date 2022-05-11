@@ -161,10 +161,12 @@ namespace Application.Services
                         if (unprocessedShots.Count() == game.DefaultFrameSize && IsSpare(knockedPins))
                         {
                             AddFrame(FrameType.Spare, knockedPins);
+                            MarkShotAsProcessed(unprocessedShots);
                         }
-                        else
+                        else if (unprocessedShots.Count() == game.DefaultFrameSize)
                         {
                             AddFrame(FrameType.Open, knockedPins);
+                            MarkShotAsProcessed(unprocessedShots);
                         }
                     }
                 }
