@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Application.Services;
+﻿using Application.Services;
 using Bowling.DisplayModel;
 using Domain;
 using Domain.Enumerations;
@@ -20,6 +19,8 @@ namespace Bowling.Pages
         public void OnGet()
         {
             AddTestGame_AllStrikes();
+            AddTestGame_AllOpen();
+            AddTestGame_AllSpare();
         }
 
         private DisplayGame SetDisplayGame(string gameName, int frameDefaultSize, string message, int score, List<Frame> frames)
@@ -71,26 +72,55 @@ namespace Bowling.Pages
         }
         private void AddTestGame_AllOpen()
         {
+            var bowlingService = new BowlingGameService();
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(4);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(5);
+            bowlingService.AddShot(6);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(2);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(1);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(1);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(4);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(5);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(6);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(2);
+            displayGames.Add(SetDisplayGame("All Open", bowlingService.GetDefaultFrameSize(), bowlingService.GetMessage(), bowlingService.GetScore(), bowlingService.GetAllFrames()));
 
         }
         private void AddTestGame_AllSpare()
         {
-
-        }
-        private void AddTestGame_FirstStrike()
-        {
-
-        }
-        private void AddTestGame_LastStrike()
-        {
-
-        }
-        private void AddTestGame_MiddleStrike()
-        {
-
-        }
-        private void AddTestGame_MiddleSpare()
-        {
+            var bowlingService = new BowlingGameService();
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(7);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(7);
+            bowlingService.AddShot(6);
+            bowlingService.AddShot(4);
+            bowlingService.AddShot(5);
+            bowlingService.AddShot(5);
+            bowlingService.AddShot(7);
+            bowlingService.AddShot(3);
+            bowlingService.AddShot(8);
+            bowlingService.AddShot(2);
+            bowlingService.AddShot(6);
+            bowlingService.AddShot(4);
+            bowlingService.AddShot(5);
+            bowlingService.AddShot(5);
+            bowlingService.AddShot(4);
+            bowlingService.AddShot(6);
+            bowlingService.AddShot(8);
+            bowlingService.AddShot(2);
+            bowlingService.AddShot(9);
+            displayGames.Add(SetDisplayGame("All Spares", bowlingService.GetDefaultFrameSize(), bowlingService.GetMessage(), bowlingService.GetScore(), bowlingService.GetAllFrames()));
 
         }
     }
