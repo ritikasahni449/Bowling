@@ -50,16 +50,23 @@ namespace Application.Services
                 var nextFrame = game.Frames.OrderBy(x => x.Id).SkipWhile(x => x.Id != currentFrameId).Skip(1).FirstOrDefault();
                 if (nextFrame != null)
                 {
-                    if (nextFrame.FrameShots.Count() > processedCount)
+                    sum += nextFrame.FrameShots.Take(count - processedCount).Sum();
+                    currentFrameId = nextFrame.Id;
+                    processedCount = processedCount + nextFrame.FrameShots.Count();
+                }
+                else
+                {
+                    var nextShots = game.Shots.OrderBy(x => x.Id).Where(x => !x.IsProcessed).Take(count - processedCount);
+                    if (nextShots.Any())
                     {
-                        sum += nextFrame.FrameShots.Take(count - processedCount).Sum();
+                        var pins = nextShots.Select(x => x.PinsKnocked);
+                        sum += pins.Sum();
+                        processedCount = processedCount + pins.Count();
                     }
                     else
                     {
-                        sum += nextFrame.FrameShots.Sum();
+                        break;
                     }
-                    currentFrameId = nextFrame.Id;
-                    processedCount = processedCount + nextFrame.FrameShots.Count();
                 }
             }
 
