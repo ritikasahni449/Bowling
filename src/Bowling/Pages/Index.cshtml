@@ -1,0 +1,37 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bowling</h1>
+</div>
+@foreach (var game in Model.displayGames)
+{
+    <div class="row">
+
+        <h2 class="display-4">@game.GameName</h2>
+
+        <h2 class="display-4">Score: @game.Score</h2>
+        <p><b>Message:</b> @game.Message</p>
+
+        <table>
+            <tr>
+                @for (int i = 0; i < game.Frames.Count(); i++)
+                {
+                    <th colspan="@game.Frames[i].Shots.Count()">Frame: @(i + 1) </th>
+                }
+            </tr>
+            <tr>
+                @for (int i = 0; i < game.Frames.Count(); i++)
+                {
+                    @for (int j = 0; j < game.Frames[i].Shots.Count(); j++)
+                    {
+                        <td>@game.Frames[i].Shots[j]</td>
+                    }
+                }
+            </tr>
+        </table>
+    </div>
+}
