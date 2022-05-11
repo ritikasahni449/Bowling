@@ -52,11 +52,11 @@ namespace Application.Services
                 {
                     sum += nextFrame.FrameShots.Take(count - processedCount).Sum();
                     currentFrameId = nextFrame.Id;
-                    processedCount = processedCount + nextFrame.FrameShots.Count();
+                    processedCount = processedCount + nextFrame.FrameShots.Take(count - processedCount).Count();
                 }
                 else
                 {
-                    var nextShots = game.Shots.OrderBy(x => x.Id).Where(x => !x.IsProcessed).Take(count - processedCount);
+                    var nextShots = game.Shots.Where(x => !x.IsProcessed).OrderBy(x => x.Id).Take(count - processedCount);
                     if (nextShots.Any())
                     {
                         var pins = nextShots.Select(x => x.PinsKnocked);
@@ -83,26 +83,65 @@ namespace Application.Services
 
         public List<Frame> GetAllFrames()
         {
-            return game.Frames;
+            var frames = new List<Frame>();
+            frames.AddRange(game.Frames);
+            var unprocessed = game.Shots.Where(x => !x.IsProcessed).OrderBy(x => x.Id).Select(x => x.PinsKnocked).ToList();
+            if (unprocessed.Any())
+            {
+                frames.Add(new Frame { Id = game.Frames.Count() + 1, FrameType = FrameType.None, FrameShots = unprocessed });
+            }
+            return frames;
+        }
+
+        public void StartNewGame()
+        {
+            game = new Game();
         }
 
         public void AddShot(int pinsKnocked)
         {
             if (!HasMaxFrames())
             {
-                game.Shots.Add(new Shot { Id = game.Shots.Count() + 1, PinsKnocked = pinsKnocked, IsProcessed = false });
-                SetShotDisplayMessage();
-                ProcessShots();
+                if (IsValidRoll(pinsKnocked))
+                {
+                    game.Shots.Add(new Shot { Id = game.Shots.Count() + 1, PinsKnocked = pinsKnocked, IsProcessed = false });
+                    SetShotDisplayMessage();
+                    ProcessShots();
+                }
+                else
+                {
+                    game.Message = "Invalid roll! Max number of pins are: " + game.MaxPinsAllowed;
+                }
             }
             else
             {
-                game.Message = "Max number of frames allowed in this game are: " + game.MaxFramesAllowed;
+                game.Message = "Invalid roll! Max number of frames allowed in this game are: " + game.MaxFramesAllowed;
             }
         }
 
         private bool HasMaxFrames()
         {
             return game.Frames.Count() == game.MaxFramesAllowed;
+        }
+
+        private bool IsValidRoll(int pins)
+        {
+            if (IsLastFrame())
+            {
+                var unprocessedShots = game.Shots.Where(x => !x.IsProcessed).OrderBy(x => x.Id).ToList();
+                if (unprocessedShots.Any())
+                {
+                    if (IsStrike(unprocessedShots.First().PinsKnocked))
+                    {
+                        return pins + game.Shots.Where(x => !x.IsProcessed).OrderBy(x => x.Id).Select(x => x.PinsKnocked).Sum() <= (game.MaxPinsAllowed * (game.DefaultFrameSize + 1));
+                    }
+                    else if (IsSpare(unprocessedShots.Take(game.DefaultFrameSize).Select(x => x.PinsKnocked).ToList()))
+                    {
+                        return pins + game.Shots.Where(x => !x.IsProcessed).OrderBy(x => x.Id).Select(x => x.PinsKnocked).Sum() <= (game.MaxPinsAllowed * (game.DefaultFrameSize));
+                    }
+                }
+            }
+            return pins + game.Shots.Where(x => !x.IsProcessed).OrderBy(x => x.Id).Select(x => x.PinsKnocked).Sum() <= game.MaxPinsAllowed;
         }
 
         private void SetShotDisplayMessage()

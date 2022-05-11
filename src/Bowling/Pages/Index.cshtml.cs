@@ -36,7 +36,7 @@ namespace Bowling.Pages
                 }
                 else if (frame.FrameType == FrameType.Strike)
                 {
-                    displayFrame.Shots.AddRange(frame.FrameShots.Select(x => x.ToString()));
+                    displayFrame.Shots.AddRange(frame.FrameShots.Select(x => "X"));
                     for (int i = 0; i < frameDefaultSize - 1; i++)
                     {
                         displayFrame.Shots.Add("");

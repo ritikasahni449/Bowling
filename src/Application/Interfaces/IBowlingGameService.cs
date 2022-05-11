@@ -10,5 +10,6 @@ namespace Application.Interfaces
         public int GetScore();
         public string GetMessage();
         public int GetDefaultFrameSize();
+        public void StartNewGame();
     }
 }

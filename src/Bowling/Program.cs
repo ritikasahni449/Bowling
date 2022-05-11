@@ -1,7 +1,11 @@
+using Application.Interfaces;
+using Application.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<IBowlingGameService, BowlingGameService>();
 
 var app = builder.Build();
 

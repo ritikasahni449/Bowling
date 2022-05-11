@@ -5,9 +5,9 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bowling", "src\Bowling\Bowling.csproj", "{D245A2B6-A3D2-439D-A6D9-8AD076CB5CED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{31EA9E1B-A8A3-452A-9EBF-185A3B913250}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{31EA9E1B-A8A3-452A-9EBF-185A3B913250}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{C2D1C47E-EF1B-4FDF-ADA0-30A5E573686C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{C2D1C47E-EF1B-4FDF-ADA0-30A5E573686C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

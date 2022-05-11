@@ -1,0 +1,50 @@
+﻿@page
+@model Bowling.Pages.PlayBowlingGameModel
+@{
+    ViewData["Title"] = "Bowling - Want to play a game?";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Bowling</h1>
+</div>
+
+
+<div>
+    <p><a href="/PlayBowlingGame" class="submit">Start New Game</a></p>
+</div>
+
+
+
+<form method="post">
+    <div>
+        <label class="col-xs-6" asp-for="PinsRolled">Enter pins knocked down:</label>
+        <input type="number" class="col-xs-6" asp-for="PinsRolled" />
+    </div>
+    <div>
+        <button type="submit" value="Submit" class="submit">Roll a Shot</button>
+    </div>
+</form>
+
+<div class="row">
+    <h2 class="display-4">@Model.DisplayGame.GameName</h2>
+    <h2 class="display-4">Score: @Model.DisplayGame.Score</h2>
+    <p style="color:red"><b>Message: @Model.DisplayGame.Message</b></p>
+    <table>
+        <tr>
+            @for (int i = 0; i < Model.DisplayGame.Frames.Count(); i++)
+            {
+                <th colspan="@Model.DisplayGame.Frames[i].Shots.Count()">Frame: @(i + 1) </th>
+            }
+        </tr>
+        <tr>
+            @for (int i = 0; i < Model.DisplayGame.Frames.Count(); i++)
+            {
+                @for (int j = 0; j < Model.DisplayGame.Frames[i].Shots.Count(); j++)
+                {
+                    <td>@Model.DisplayGame.Frames[i].Shots[j]</td>
+                }
+            }
+        </tr>
+    </table>
+</div>
